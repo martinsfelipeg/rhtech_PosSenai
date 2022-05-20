@@ -1,0 +1,32 @@
+Qual departamento tem o maior impacto no faturamento e porque?
+
+SELECT nome, SUM("Valor") AS "Custos"
+				
+FROM rh_nota_fiscal AS nf
+
+LEFT JOIN rh_departamento AS rd
+ON rd.id = nf.departamento_id
+
+GROUP BY nome
+
+ORDER BY "Custos" DESC;
+
+SELECT rd.nome, SUM("Pagamento") + (SUM("Hora_Extra") * 12) AS CustoSalario
+				
+FROM rh_colaborador AS colab
+
+LEFT JOIN rh_folha_pag AS fpag
+ON colab.folha_pag_id = fpag.id
+
+LEFT JOIN rh_departamento AS rd
+ON colab.departamento_id = rd.id
+
+GROUP BY rd.nome;
+
+/*
+  Financeiro	22.000 | 19.540 - 41.540
+  Comercial	 9.800 | 26.000 - 35.800
+  Engenharia	13.980 | 20.860 - 34.840
+  TI	        12.650 | 19.540 - 32.190
+
+-- O departamento que tem o maior impacto no faturamento é o Financeiro. */
